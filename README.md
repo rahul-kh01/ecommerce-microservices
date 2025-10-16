@@ -39,7 +39,7 @@ A complete microservices architecture built with Spring Boot 3.x, featuring serv
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/rahul-kh01/ecommerce-microservices
 cd ecom-microservices
 
 # Start everything with one command
@@ -397,5 +397,6 @@ For issues and questions:
 4. Create an issue in the repository
 
 ---
+
 
 **Happy Coding! 🚀**
