@@ -1,0 +1,132 @@
+
+services:
+  # PostgreSQL for Order Service
+  postgres-order:
+    image: postgres:15
+    container_name: postgres-order
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: orderdb
+      POSTGRES_USER: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_order_data:/var/lib/postgresql/data
+    networks:
+      - ecom-network
+
+  # PostgreSQL for Product Service
+  postgres-product:
+    image: postgres:15
+    container_name: postgres-product
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: productdb
+      POSTGRES_USER: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_product_data:/var/lib/postgresql/data
+    networks:
+      - ecom-network
+
+  # MongoDB for User Service
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: ecommerce
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - ecom-network
+
+  # Redis for Gateway Caching
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - ecom-network
+
+  # Zookeeper for Kafka
+  zookeeper:
+    image: zookeeper:3.8
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    volumes:
+      - zookeeper_data:/data
+    networks:
+      - ecom-network
+
+  # Kafka for Event Streaming
+  kafka:
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    networks:
+      - ecom-network
+
+  # Keycloak for Authentication
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    command: start-dev
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    networks:
+      - ecom-network
+
+  # Config Server
+  config-server:
+    image: springcloud/configserver:latest
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - ecom-network
+
+  # Eureka Server
+  eureka-server:
+    image: steeltoeoss/eureka-server:latest
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - ecom-network
+
+volumes:
+  postgres_order_data:
+  postgres_product_data:
+  mongodb_data:
+  redis_data:
+  zookeeper_data:
+  kafka_data:
+  keycloak_data:
+
+networks:
+  ecom-network:
+    driver: bridge

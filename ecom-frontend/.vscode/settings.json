@@ -1,0 +1,38 @@
+{
+  "bun.runtime": "~/.bun/bin/bun",
+  "javascript.preferences.packageManager": "bun",
+  "typescript.preferences.packageManager": "bun",
+  "npm.packageManager": "bun",
+  
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  
+  "files.associations": {
+    "*.jsx": "javascriptreact",
+    "bunfig.toml": "toml"
+  },
+  
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/bun.lockb": true,
+    "**/.bun": true
+  },
+  
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/bun.lockb": true
+  },
+  
+  "terminal.integrated.env.linux": {
+    "PATH": "${env:HOME}/.bun/bin:${env:PATH}"
+  },
+  "terminal.integrated.env.osx": {
+    "PATH": "${env:HOME}/.bun/bin:${env:PATH}"
+  }
+}
+

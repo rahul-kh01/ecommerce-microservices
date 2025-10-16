@@ -1,0 +1,32 @@
+# Bun ignore file - files to ignore when bundling
+# Similar to .npmignore
+
+# Development files
+*.md
+!README.md
+.git
+.github
+.vscode
+
+# Documentation
+docs/
+*.txt
+
+# Tests
+__tests__/
+*.test.js
+*.test.jsx
+*.spec.js
+*.spec.jsx
+coverage/
+
+# Build artifacts
+dist/
+build/
+*.log
+
+# Config files
+.env*
+!.env.example
+.editorconfig
+.prettierrc

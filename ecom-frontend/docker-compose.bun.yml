@@ -1,0 +1,52 @@
+version: '3.8'
+
+# Docker Compose for Bun-based frontend
+# This configuration uses Bun for faster development and builds
+
+services:
+  frontend-dev:
+    image: oven/bun:1.1.38-alpine
+    container_name: ecom-frontend-dev
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - bun-cache:/root/.bun
+    ports:
+      - "5173:5173"
+    environment:
+      - NODE_ENV=development
+      - VITE_BACK_END_URL=${VITE_BACK_END_URL:-http://localhost:8080}
+    command: sh -c "bun install && bun run dev"
+    networks:
+      - ecom-network
+    restart: unless-stopped
+
+  frontend-build:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_BACK_END_URL: ${VITE_BACK_END_URL:-http://localhost:8080}
+    image: ecom-frontend:latest
+    container_name: ecom-frontend-prod
+    ports:
+      - "80:80"
+    networks:
+      - ecom-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  bun-cache:
+    driver: local
+
+networks:
+  ecom-network:
+    driver: bridge
+

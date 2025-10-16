@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: user-service
+  config:
+    import: optional:configserver:http://localhost:8888
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017
+      database: ecom_user
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/ecom-app
+
+server:
+  port: 8082
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+
+# KEYCLOAK Configuration
+keycloak:
+  admin:
+    username: admin
+    password: admin
+    server-url: http://localhost:8080
+    realm: ecom-app
+    client-id: admin-cli
+    client-uid: 74d31cf4-5808-43de-93e0-01a079063245

@@ -1,0 +1,27 @@
+# Bun configuration file
+# https://bun.sh/docs/runtime/bunfig
+
+[install]
+# Install configuration
+registry = "https://registry.npmjs.org/"
+# Add custom scopes if needed
+# [install.scopes]
+# "@myorg" = "https://registry.myorg.com/"
+
+[install.cache]
+# Cache directory
+dir = "node_modules/.cache/bun"
+
+[install.lockfile]
+# Lockfile configuration
+save = true
+print = "yarn"
+
+[test]
+# Test configuration
+preload = []
+
+[run]
+# Runtime configuration (shell: 'bun' or 'system')
+shell = "system"
+
