@@ -3,7 +3,7 @@ import { FaUsers, FaShoppingBag, FaHeadset, FaAward, FaRocket, FaShieldAlt, FaSt
 
 const products = [
     {
-        image: "https://embarkx.com/sample/placeholder.png",
+        image: "https://rahul.com/sample/placeholder.png",
         productName: "iPhone 13 Pro Max",
         description:
           "The iPhone 13 Pro Max offers exceptional performance with its A15 Bionic chip, stunning Super Retina XDR display, and advanced camera features for breathtaking photos.",
@@ -11,7 +11,7 @@ const products = [
         price: 780,
       },
       {
-        image: "https://embarkx.com/sample/placeholder.png",
+        image: "https://rahul.com/sample/placeholder.png",
         productName: "Samsung Galaxy S21",
         description:
           "Experience the brilliance of the Samsung Galaxy S21 with its vibrant AMOLED display, powerful camera, and sleek design that fits perfectly in your hand.",
@@ -19,7 +19,7 @@ const products = [
         price: 799,
       },
       {
-        image: "https://embarkx.com/sample/placeholder.png",
+        image: "https://rahul.com/sample/placeholder.png",
         productName: "Google Pixel 6",
         description:
           "The Google Pixel 6 boasts cutting-edge AI features, exceptional photo quality, and a stunning display, making it a perfect choice for Android enthusiasts.",
@@ -111,7 +111,7 @@ const About = () => {
                         <div className="relative">
                             <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl transform rotate-6 animate-float"></div>
                             <img
-                                src="https://embarkx.com/sample/placeholder.png"
+                                src="https://rahul.com/sample/placeholder.png"
                                 alt="About Us"
                                 className="relative w-full h-auto rounded-3xl shadow-2xl transform transition-transform duration-500 hover:scale-105 object-cover"
                             />

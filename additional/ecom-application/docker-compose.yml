@@ -3,8 +3,8 @@ services:
     container_name: postgres_container
     image: postgres:14
     environment:
-      POSTGRES_USER: embarkx
-      POSTGRES_PASSWORD: embarkx
+      POSTGRES_USER: rahul
+      POSTGRES_PASSWORD: rahul
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
