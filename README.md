@@ -394,29 +394,6 @@ All endpoints require JWT token in Authorization header:
 Authorization: Bearer <jwt-token>
 ```
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🆘 Support
-
-For issues and questions:
-1. Check the troubleshooting section
-2. Review the logs
-3. Check service health
-4. Create an issue in the repository
-
----
-
-
 ### **🧪 Verification Tests - ALL PASSING**
 
 ✅ **Admin Login**: 
@@ -514,6 +491,7 @@ Response: {"message": "User registered successfully!"}
 - **Admin**: `admin` / `adminPass`
 - **User**: `user1` / `password1`  
 - **Seller**: `seller1` / `password2`
+
 
 
 
