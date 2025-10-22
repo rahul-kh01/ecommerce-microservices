@@ -37,25 +37,33 @@ public class KeyCloakAdminService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public String getAdminAccessToken() {
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("client_id", clientId);
-        params.add("username", adminUsername);
-        params.add("password", adminPassword);
-        params.add("grant_type", "password");
+        try {
+            MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+            params.add("client_id", clientId);
+            params.add("username", adminUsername);
+            params.add("password", adminPassword);
+            params.add("grant_type", "password");
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        HttpEntity<MultiValueMap<String, String>> entity =
-                new HttpEntity<>(params, headers);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            HttpEntity<MultiValueMap<String, String>> entity =
+                    new HttpEntity<>(params, headers);
 
-        String url = keycloakServerUrl + "/realms/" + realm + "/protocol/openid-connect/token";
-        ResponseEntity<Map> response = restTemplate.postForEntity(
-                url,
-                entity,
-                Map.class
-        );
+            String url = keycloakServerUrl + "/realms/" + realm + "/protocol/openid-connect/token";
+            ResponseEntity<Map> response = restTemplate.postForEntity(
+                    url,
+                    entity,
+                    Map.class
+            );
 
-        return (String) response.getBody().get("access_token");
+            if (!response.getStatusCode().is2xxSuccessful() || response.getBody() == null) {
+                throw new RuntimeException("Failed to get admin access token from Keycloak");
+            }
+
+            return (String) response.getBody().get("access_token");
+        } catch (Exception e) {
+            throw new RuntimeException("Error getting admin access token: " + e.getMessage(), e);
+        }
     }
 
     public String createUser(String token, UserRequest userRequest) {

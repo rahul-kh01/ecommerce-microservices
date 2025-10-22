@@ -1,18 +1,26 @@
 package com.ecommerce.gateway;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collections;
-import java.util.List;
+import reactor.core.publisher.Mono;
 
 @RestController
+@RequestMapping("/fallback")
 public class FallbackController {
-    @GetMapping("/fallback/products")
-    public ResponseEntity<List<String>> productsFallback() {
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body(Collections.singletonList("Product service is unavailable, please try after sometime"));
+
+    @GetMapping("/products")
+    public Mono<String> productFallback() {
+        return Mono.just("Product service is temporarily unavailable. Please try again later.");
+    }
+
+    @GetMapping("/users")
+    public Mono<String> userFallback() {
+        return Mono.just("User service is temporarily unavailable. Please try again later.");
+    }
+
+    @GetMapping("/orders")
+    public Mono<String> orderFallback() {
+        return Mono.just("Order service is temporarily unavailable. Please try again later.");
     }
 }

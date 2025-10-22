@@ -24,7 +24,7 @@ services:
       POSTGRES_DB: productdb
       POSTGRES_USER: postgres
     ports:
-      - "5433:5432"
+      - "5434:5432"
     volumes:
       - postgres_product_data:/var/lib/postgresql/data
     networks:
@@ -100,6 +100,21 @@ services:
     networks:
       - ecom-network
 
+  # RabbitMQ for Message Bus
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - ecom-network
+
   # Config Server
   config-server:
     image: springcloud/configserver:latest
@@ -118,6 +133,15 @@ services:
     networks:
       - ecom-network
 
+  # Zipkin for Distributed Tracing
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - ecom-network
+
 volumes:
   postgres_order_data:
   postgres_product_data:
@@ -126,6 +150,7 @@ volumes:
   zookeeper_data:
   kafka_data:
   keycloak_data:
+  rabbitmq_data:
 
 networks:
   ecom-network:

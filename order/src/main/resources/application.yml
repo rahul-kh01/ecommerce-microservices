@@ -8,6 +8,13 @@ spring:
     username: postgres
     password: admin
     driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
   jpa:
     hibernate:
       ddl-auto: update
@@ -31,7 +38,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring.json.trusted.packages: "*"
+        spring.json.trusted.packages: "com.ecommerce.order.dtos,com.ecommerce.order.models"
 
 server:
   port: 8083
@@ -49,7 +56,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: "health,info,metrics"
   endpoint:
     health:
       show-details: always

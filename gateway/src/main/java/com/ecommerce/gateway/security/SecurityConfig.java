@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/actuator/**", "/fallback/**", "/eureka/**").permitAll()
+                        .pathMatchers("/api/jwt-test/**").authenticated()
                         .anyExchange().authenticated())
                 .oauth2ResourceServer(oauth2 ->
                         oauth2.jwt(jwt ->
@@ -50,12 +51,13 @@ public class SecurityConfig {
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt -> {
             List<String> roles = jwt.getClaimAsMap("resource_access")
                     .entrySet().stream()
-                    .filter(entry -> entry.getKey().equals("oauth2-pkce"))
+                    .filter(entry -> entry.getKey().equals("ecom-app"))
                     .flatMap(entry -> ((Map<String, List<String>>) entry.getValue())
                             .get("roles").stream())
                     .toList();
 
-            System.out.println("Extracted Roles: " + roles);
+            // Log extracted roles for debugging (remove in production)
+            // System.out.println("Extracted Roles: " + roles);
 
             return Flux.fromIterable(roles)
                     .map(role -> new SimpleGrantedAuthority("ROLE_" + role));

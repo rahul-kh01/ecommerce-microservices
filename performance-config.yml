@@ -1,0 +1,94 @@
+# Performance Configuration for E-commerce Microservices
+# This file contains optimized configurations for production deployment
+
+# JVM Performance Tuning
+JAVA_OPTS: >
+  -Xms512m
+  -Xmx2g
+  -XX:+UseG1GC
+  -XX:MaxGCPauseMillis=200
+  -XX:+UseStringDeduplication
+  -XX:+OptimizeStringConcat
+  -XX:+UseCompressedOops
+  -XX:+UseCompressedClassPointers
+  -XX:+TieredCompilation
+  -XX:TieredStopAtLevel=1
+  -Djava.security.egd=file:/dev/./urandom
+  -Dspring.profiles.active=production
+
+# Database Performance Tuning
+DATABASE_CONFIG:
+  hikari:
+    maximum-pool-size: 20
+    minimum-idle: 5
+    connection-timeout: 30000
+    idle-timeout: 600000
+    max-lifetime: 1800000
+    leak-detection-threshold: 60000
+    validation-timeout: 5000
+    connection-test-query: SELECT 1
+
+# Cache Configuration
+CACHE_CONFIG:
+  caffeine:
+    spec: maximumSize=1000,expireAfterWrite=10m,recordStats
+  redis:
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+        max-wait: -1ms
+
+# Circuit Breaker Configuration
+RESILIENCE4J_CONFIG:
+  circuitbreaker:
+    instances:
+      default:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        slidingWindowType: count_based
+  retry:
+    instances:
+      default:
+        maxAttempts: 3
+        waitDuration: 1s
+        exponentialBackoffMultiplier: 2
+        retryExceptions:
+          - java.net.ConnectException
+          - java.net.SocketTimeoutException
+  ratelimiter:
+    instances:
+      default:
+        timeout-duration: 0
+        limit-refresh-period: 1s
+        limit-for-period: 10
+
+# Monitoring Configuration
+MONITORING_CONFIG:
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+    endpoint:
+      health:
+        show-details: always
+    metrics:
+      export:
+        prometheus:
+          enabled: true
+    tracing:
+      sampling:
+        probability: 0.1
+  logging:
+    level:
+      org.springframework.cache: DEBUG
+      org.hibernate.SQL: DEBUG
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE

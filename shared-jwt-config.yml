@@ -1,0 +1,48 @@
+# Shared JWT Configuration for All Services
+# This file contains the standard JWT configuration that should be used across all services
+
+jwt:
+  issuer-uri: http://localhost:8080/realms/ecom-app
+  jwk-set-uri: http://localhost:8080/realms/ecom-app/protocol/openid-connect/certs
+  audience: ecom-app
+  client-id: ecom-app
+
+# Standard Security Configuration
+security:
+  oauth2:
+    resourceserver:
+      jwt:
+        issuer-uri: ${jwt.issuer-uri}
+        jwk-set-uri: ${jwt.jwk-set-uri}
+  
+  # Standard role extraction configuration
+  role-extraction:
+    resource-access-key: ecom-app
+    roles-claim-path: resource_access.ecom-app.roles
+    authority-prefix: ROLE_
+
+# Standard path configurations
+security-paths:
+  permit-all:
+    - /actuator/**
+    - /health/**
+    - /info/**
+    - /metrics/**
+    - /swagger-ui/**
+    - /v3/api-docs/**
+    - /webjars/**
+  
+  # Service-specific permit-all paths
+  product-service:
+    - /api/products/simulate
+    - /api/products/public/**
+  
+  user-service:
+    - /api/users/register
+    - /api/users/public/**
+  
+  order-service:
+    - /api/orders/public/**
+  
+  notification-service:
+    - /api/notifications/public/**

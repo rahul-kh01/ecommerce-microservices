@@ -36,7 +36,7 @@ public class OrderService {
 
         // Calculate total price
         BigDecimal totalPrice = cartItems.stream()
-                .map(CartItem::getPrice)
+                .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         // Create order
@@ -62,6 +62,11 @@ public class OrderService {
         cartService.clearCart(userId);
 
         return Optional.of(mapToOrderResponse(savedOrder));
+    }
+
+    public Optional<OrderResponse> getOrder(Long orderId) {
+        return orderRepository.findById(orderId)
+                .map(this::mapToOrderResponse);
     }
 
     private OrderResponse mapToOrderResponse(Order order) {

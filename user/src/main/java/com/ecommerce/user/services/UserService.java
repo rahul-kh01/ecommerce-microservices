@@ -43,12 +43,12 @@ public class UserService {
     }
 
     public Optional<UserResponse> fetchUser(String id) {
-        return userRepository.findById(String.valueOf(id))
+        return userRepository.findById(id)
                 .map(this::mapToUserResponse);
     }
 
     public boolean updateUser(String id, UserRequest updatedUserRequest) {
-        return userRepository.findById(String.valueOf(id))
+        return userRepository.findById(id)
                 .map(existingUser -> {
                     updateUserFromRequest(existingUser, updatedUserRequest);
                     userRepository.save(existingUser);

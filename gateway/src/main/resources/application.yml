@@ -20,7 +20,7 @@ spring:
           issuer-uri: http://localhost:8080/realms/ecom-app
 
 server:
-  port: 8085
+  port: 8080
 
 eureka:
   client:
